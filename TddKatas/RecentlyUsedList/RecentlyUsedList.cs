@@ -10,11 +10,20 @@
             _counter = 0;
         }
 
+        public RecentlyUsedList(int capacity)
+        {
+            Items = new List<string>(2);
+            _counter = 0;
+        }
+
         public int Length { get => _counter; }
         private List<string> Items { get; set; }
 
         public void Add(string v)
         {
+            if (string.IsNullOrEmpty(v))
+                return;
+
             if (Items.Contains(v))
             {
                 var tmp = Items.IndexOf(v);
@@ -23,12 +32,24 @@
                 return;
             }
 
+
+            if (_counter == Items.Capacity)
+            {
+                Items.RemoveAt(0);
+            }
+
             Items.Add(v);
-            _counter++;
+
+            if (_counter < Items.Capacity)
+                _counter++;
         }
 
         public string getByIndex(int v)
         {
+            if (v < 0)
+                throw new Exception("Negative numbers not allowed");
+
+
             return Items[(_counter - 1) - v];
         }
     }
